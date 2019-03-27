@@ -8,6 +8,10 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags '-w -extldflags "-st
 
 FROM alpine
 EXPOSE 80 
-RUN apk add ca-certificates
 COPY --from=builder /app/netdemo /bin/netdemo
+RUN apk add libcap ca-certificates
+RUN setcap 'cap_net_bind_service=+ep' /bin/netdemo
+RUN adduser -D demouser
+USER demouser
+
 ENTRYPOINT ["/bin/netdemo"]

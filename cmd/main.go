@@ -7,8 +7,9 @@ import (
 	"net/http"
 	n "netdemo"
 	"os"
-
+	u "os/user"
 	"runtime"
+	"strings"
 )
 
 const Ver string = "v1.0"
@@ -30,6 +31,18 @@ func init() {
 
 func main() {
 	log.Println("Server starting...")
+	user, _ := u.Current()
+	grpIds, _ := user.GroupIds()
+	var groups []string
+	for _, grpId := range grpIds {
+		grp, _ := u.LookupGroupId(grpId)
+
+		groups = append(groups, grp.Name)
+
+	}
+	fmt.Println("User  : ", user.Username)
+	fmt.Println("Groups: ", strings.Join(groups, ", "))
+
 	http.HandleFunc("/", n.HIndex)
 
 	http.HandleFunc("/env", func(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +63,13 @@ func main() {
 
 			}
 		}
+	})
+
+	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+
+		fmt.Fprintf(w, "User  : %s \n", user.Username)
+		fmt.Fprintf(w, "Groups: %s \n", strings.Join(groups, ", "))
+
 	})
 
 	if err := http.ListenAndServe(":80", nil); err != nil {
