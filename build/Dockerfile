@@ -1,4 +1,4 @@
-FROM golang:1.12-alpine AS builder
+FROM golang:1.24.1-alpine AS builder
 ENV GO111MODULE=on
 RUN apk add ca-certificates
 WORKDIR /app

@@ -13,7 +13,22 @@ func HIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
-		fmt.Fprint(w, "Hello, World!")
+		fmt.Fprint(w, `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Demo</title>
+</head>
+<body>
+    <h5>Hello, World!</h5>
+    <ul>
+        <li><a href="/env">envaironment variables</a></li>
+        <li><a href="/header">request header info</a></li>
+    </ul>
+</body>
+</html>
+`)
 		return
 	}
 	if d.Name == "" {

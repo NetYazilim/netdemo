@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-const Ver string = "v1.0"
+const Ver string = "v1.2.0"
 
 var GoVersion string
 
@@ -31,16 +31,25 @@ func init() {
 
 func main() {
 	log.Println("Server starting...")
-	user, _ := u.Current()
-	grpIds, _ := user.GroupIds()
-	var groups []string
-	for _, grpId := range grpIds {
-		grp, _ := u.LookupGroupId(grpId)
 
-		groups = append(groups, grp.Name)
-
+	user, err := u.Current()
+	if err != nil {
+		fmt.Println("Error: ", err)
 	}
 	fmt.Println("User  : ", user.Username)
+	grpIds, _ := user.GroupIds()
+
+	var groups []string
+	for _, grpId := range grpIds {
+		//		fmt.Printf("grpId : %s\n", grpId)
+		grp, err := u.LookupGroupId(grpId)
+		if err != nil {
+			fmt.Println("Error: ", err)
+			continue
+		}
+		groups = append(groups, grp.Name)
+	}
+
 	fmt.Println("Groups: ", strings.Join(groups, ", "))
 
 	http.HandleFunc("/", n.HIndex)
@@ -63,12 +72,13 @@ func main() {
 
 			}
 		}
+
 	})
 
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 
-		fmt.Fprintf(w, "User  : %s \n", user.Username)
-		fmt.Fprintf(w, "Groups: %s \n", strings.Join(groups, ", "))
+		//	fmt.Fprintf(w, "User  : %s \n", user.Username)
+		//		fmt.Fprintf(w, "Groups: %s \n", strings.Join(groups, ", "))
 
 	})
 
