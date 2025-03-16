@@ -25,6 +25,7 @@ func HIndex(w http.ResponseWriter, r *http.Request) {
     <ul>
         <li><a href="/env">envaironment variables</a></li>
         <li><a href="/header">request header info</a></li>
+        <li><a href="/user">user info</a></li>
     </ul>
 </body>
 </html>
