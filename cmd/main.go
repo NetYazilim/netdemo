@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-const Ver string = "v1.2.0"
+const Ver string = "v1.2.1"
 
 var GoVersion string
 
@@ -77,8 +77,8 @@ func main() {
 
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 
-		//	fmt.Fprintf(w, "User  : %s \n", user.Username)
-		//		fmt.Fprintf(w, "Groups: %s \n", strings.Join(groups, ", "))
+		fmt.Fprintf(w, "User  : %s \n", user.Username)
+		fmt.Fprintf(w, "Groups: %s \n", strings.Join(groups, ", "))
 
 	})
 
